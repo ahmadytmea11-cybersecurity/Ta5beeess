@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصف السادس ب - مدرسة دير أبي سعيد الثانوية للبنين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* إعدادات التصميم العام وعناصر الـ Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background-color: #f4f6f9; color: #2c3e50; line-height: 2.4; position: relative; overflow-x: hidden; }
+        
+        /* شريط علوي رسمي حكومي */
+        .gov-top-bar { background-color: #1a252f; color: #bdc3c7; font-size: 13px; padding: 8px 0; border-bottom: 3px solid #c5a059; }
+        .gov-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; padding: 0 20px; align-items: center; }
+        
+        /* زاوية البروفايل الشخصي العلوية والمعلومات المنسدلة */
+        .user-profile-area { display: none; align-items: center; gap: 10px; cursor: pointer; user-select: none; position: relative; }
+        .profile-img { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #c5a059; background: #cbd5e1; object-fit: cover; }
+
+        /* نافذة معلومات البروفايل المنبثقة (Dropdown) */
+        .profile-dropdown { display: none; position: absolute; left: 0; top: 40px; background: white; border: 1px solid #e2e8f0; width: 260px; padding: 20px; border-radius: 6px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 2000; border-top: 4px solid #1e3a5f; text-align: right; }
+        .profile-dropdown h4 { color: #1e3a5f; font-size: 16px; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; font-weight: 700; }
+        .profile-dropdown p { font-size: 13px; color: #4a5568; line-height: 1.8; margin-bottom: 5px; }
+        .logout-link { display: inline-block; margin-top: 10px; color: #e74c3c; text-decoration: none; font-size: 13px; font-weight: bold; transition: color 0.3s; }
+        .logout-link:hover { color: #c0392b; }
+
+        /* شاشة التأكيد المنبثقة الفخمة الموحدة للموقع (Modal) */
+        .logout-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+        .modal-content { background: #ffffff; padding: 35px; border-radius: 8px; max-width: 420px; width: 90%; text-align: center; border-top: 6px solid #e74c3c; box-shadow: 0 15px 35px rgba(0,0,0,0.3); animation: modalSlide 0.3s ease; }
+        .modal-text { font-size: 16px; font-weight: 600; color: #2c3e50; margin-bottom: 25px; }
+        .modal-buttons { display: flex; gap: 15px; justify-content: center; }
+        .btn-modal { padding: 10px 25px; border: none; border-radius: 4px; font-family: 'Cairo'; font-weight: bold; cursor: pointer; font-size: 14px; transition: background 0.2s; }
+        .btn-confirm { background-color: #e74c3c; color: white; }
+        .btn-confirm:hover { background-color: #c0392b; }
+        .btn-cancel { background-color: #95a5a6; color: white; }
+        .btn-cancel:hover { background-color: #7f8c8d; }
+
+        /* الهيدر والترويسة الرئيسية للموقع */
+        .main-header { background-color: #ffffff; padding: 20px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .brand-text h1 { font-size: 22px; color: #1e3a5f; font-weight: 700; }
+        .brand-text p { font-size: 13px; color: #7f8c8d; margin-top: 5px; }
+
+        /* شريط التنقل (المنيو العلوي) واستجابته الذكية */
+        .navbar { background-color: #1e3a5f; border-bottom: 4px solid #c5a059; position: sticky; top: 0; z-index: 1000; height: 54px; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; list-style: none; padding: 0 20px; align-items: center; height: 100%; }
+        .nav-container li a { display: block; color: #ffffff; text-decoration: none; padding: 0 20px; line-height: 54px; font-size: 15px; font-weight: 600; transition: all 0.3s; }        
+        .nav-container li a:hover, .nav-container li a.active { background-color: #c5a059; color: #1e3a5f; }
+        
+        /* توزيع وهيكلة المحتوى (أعمدة العرض المتجاوبة) */
+        .main-layout { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } }
+        
+        /* بطاقات وصناديق المحتوى (Cards) */
+        .gov-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 35px; margin-bottom: 30px; text-align: justify; box-shadow: 0 5px 15px rgba(0,0,0,0.01); transition: transform 0.3s ease; }
+        .gov-card:hover { transform: translateY(-2px); }
+        .gov-card-title { font-size: 22px; color: #1e3a5f; margin-bottom: 20px; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .gov-card-title::before { content: ""; display: inline-block; width: 6px; height: 24px; background-color: #c5a059; border-radius: 2px; }
+        .gov-card p { font-size: 16px; color: #4a5568; margin-bottom: 15px; text-indent: 15px; }
+
+        /* 📊 تنسيق جدول الحصص الأسبوعي الجديد والمتجاوب */
+        .table-responsive { width: 100%; overflow-x: auto; margin: 20px 0; border: 1px solid #e2e8f0; border-radius: 6px; }
+        .schedule-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; }
+        .schedule-table th { background-color: #1e3a5f; color: #ffffff; font-weight: 700; padding: 10px; border: 1px solid #e2e8f0; }
+        .schedule-table td { padding: 10px; border: 1px solid #e2e8f0; color: #334155; }
+        .schedule-table tr:nth-child(even) { background-color: #f8fafc; }
+        .schedule-table td.day-cell { background-color: #f1f5f9; font-weight: bold; color: #1e3a5f; width: 90px; }
+
+        /* تنسيقات روابط تحميل الملفات */
+        .download-link { display: inline-block; padding: 8px 16px; background-color: #1e3a5f; color: #ffffff; text-decoration: none; border-radius: 4px; font-size: 14px; font-weight: bold; transition: background 0.2s; margin-top: 15px; }
+        .download-link:hover { background-color: #c5a059; color: #1e3a5f; }
+
+        /* القائمة الجانبية المساعدة (Sidebar) */
+        .sidebar-title { font-size: 18px; color: #1e3a5f; margin-bottom: 15px; font-weight: 700; border-bottom: 2px solid #c5a059; padding-bottom: 8px; }
+        .announcement-item { background: #ffffff; border: 1px solid #e2e8f0; border-right: 4px solid #1e3a5f; padding: 15px; margin-bottom: 15px; border-radius: 4px; transition: padding 0.2s ease; }
+        .announcement-item:hover { padding-right: 20px; border-right-color: #c5a059; }
+        
+        /* التذييل والفوتر السفلي الرسمي */
+        .gov-footer { background-color: #1a252f; color: #ffffff; padding: 40px 20px; text-align: center; border-top: 5px solid #c5a059; font-size: 14px; margin-top: 40px; }
+        .gov-footer p { margin-bottom: 10px; color: #cbd5e1; }
+
+        /* الأنيميشن والحركات البرمجية */
+        @keyframes modalSlide { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div id="customLogoutModal" class="logout-modal">
+        <div class="modal-content">
+            <div class="modal-text">❓ هل أنت متأكد من أنك تريد تسجيل الخروج من حسابك التعليمي؟</div>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-confirm" onclick="confirmLogout()">نعم، تسجيل الخروج</button>
+                <button class="btn-modal btn-cancel" onclick="closeLogoutModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="gov-top-bar">
+        <div class="gov-container">
+            <div>بوابة الإدارة الصفية - الفضاء الرقمي للصف السادس ب</div>
+            
+            <div id="userArea" class="user-profile-area" onclick="toggleDropdown(event)">
+                <span id="topUsername" style="color:#bdc3c7; font-size:13px; font-weight: 600;"></span>
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img" alt="البروفايل">
+                
+                <div id="profileDropdown" class="profile-dropdown">
+                    <h4 id="cardName">اسم الطالب</h4>
+                    <p><strong>الدور الفني:</strong> طالب نظامي</p>
+                    <p><strong>المؤسسة:</strong> مديرية التربية والتعليم - إربد</p>
+                    <p><strong>حالة الحساب:</strong> موثق ونشط</p>
+                    <a href="#" onclick="showLogoutModal(event)" class="logout-link">تسجيل الخروج</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <header class="main-header">
+        <div class="header-container">
+            <div class="brand-text">
+                <h1>الصف السادس - شعبة (ب)</h1>
+                <p>مدرسة دير أبي سعيد الثانوية الشاملة للبنين</p>
+            </div>
+        </div>
+    </header>
+    
+    <nav class="navbar">
+        <ul class="nav-container">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="about.html">التعريف بالمدرسة</a></li>
+            <li><a href="classes.html" class="active">الصفوف والشعب</a></li>
+            <li><a href="contact.html">بوابة التواصل</a></li>
+            <li><a href="login.html" id="loginMenuLink">بوابة الدخول</a></li>
+        </ul>
+    </nav>
+    
+    <div class="main-layout">
+        <main>
+            <div class="gov-card">
+                <div class="gov-card-title">الخطة التوجيهية العامة لشعبة السادس ب</div>
+                <p>أهلاً ومرحباً بكم في البوابة الإلكترونية المخصصة لطلبة شعبة الصف السادس (ب). تهدف هذه المنصة إلى تسهيل حصولكم على الإعلانات والخطط التعليمية الأسبوعية، والوقوف على أهم التكليفات والواجبات المدرسية الصادرة عن المعلمين.</p>
+                <p>تعد هذه المرحلة فترة هامة لصقل المهارات والقدرات العلمية، والالتزام الصفي والمنزلي هو الركيزة الأساسية للنجاح. نتمنى لجميع طلاب شعبة (ب) دوام المثابرة والتميز الدراسي المستمر.</p>
+            </div>
+
+            <div class="gov-card">
+                <div class="gov-card-title">المكتبة وجدول الحصص الأسبوعي</div>
+                <p>تسهيلاً على أبنائنا الطلبة، نرفق لكم جدول توزيع الحصص اليومي المعتمد لشعبة السادس ب، بالإضافة إلى رابط المرفقات والملخصات الدراسية الهامة للمراجعة المستمرة.</p>
+                
+                <div class="table-responsive">
+                    <table class="schedule-table">
+                        <thead>
+                            <tr>
+                                <th>اليوم</th>
+                                <th>الحصة 1</th>
+                                <th>الحصة 2</th>
+                                <th>الحصة 3</th>
+                                <th>الحصة 4</th>
+                                <th>الحصة 5</th>
+                                <th>الحصة 6</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="day-cell">الأحد</td>
+                                <td>علوم</td>
+                                <td>دين</td>
+                                <td>عربي</td>
+                                <td>رياضيات</td>
+                                <td>اجتماعيات</td>
+                                <td>إنجليزي</td>
+                            </tr>
+                            <tr>
+                                <td class="day-cell">الإثنين</td>
+                                <td>إنجليزي</td>
+                                <td>رياضيات</td>
+                                <td>علوم</td>
+                                <td>عربي</td>
+                                <td>مهني</td>
+                                <td>فنية</td>
+                            </tr>
+                            <tr>
+                                <td class="day-cell">الثلاثاء</td>
+                                <td>عربي</td>
+                                <td>علوم</td>
+                                <td>رياضيات</td>
+                                <td>إنجليزي</td>
+                                <td>رياضة</td>
+                                <td>اجتماعيات</td>
+                            </tr>
+                            <tr>
+                                <td class="day-cell">الأربعاء</td>
+                                <td>رياضيات</td>
+                                <td>عربي</td>
+                                <td>دين</td>
+                                <td>علوم</td>
+                                <td>حاسوب</td>
+                                <td>دين</td>
+                            </tr>
+                            <tr>
+                                <td class="day-cell">الخميس</td>
+                                <td>عربي</td>
+                                <td>إنجليزي</td>
+                                <td>رياضيات</td>
+                                <td>علوم</td>
+                                <td>نشاط</td>
+                                <td>اجتماعيات</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <a href="#" class="download-link">📥 تحميل وقراءة الملف التعليمي المعتمد</a>
+            </div>
+
+            <div class="gov-card">
+                <div class="gov-card-title">منظومة السلوك والانضباط الصفي</div>
+                <p>تؤكد إدارة مدرسة دير أبي سعيد الثانوية الشاملة على ضرورة الالتزام بقواعد السلوك القويم والانتظام الكامل في حضور الغرف الصفية لشعبة السادس ب. إن الانضباط والهدوء يدعمان الاستيعاب المعرفي ويحافظان على البيئة الدراسية المثالية للجميع.</p>
+            </div>
+        </main>
+
+        <aside>
+            <div style="background: #ffffff; padding: 25px; border: 1px solid #e2e8f0; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.01);">
+                <div class="sidebar-title">تصفح الشعب الأخرى</div>
+                <div class="announcement-item"><a href="classes.html" style="text-decoration:none; color:#1e3a5f; font-weight:bold; display: flex; justify-content: space-between;"><span>• العودة لدليل الصفوف</span> <span style="color:#c5a059;">←</span></a></div>
+                <div class="announcement-item"><a href="contact.html" style="text-decoration:none; color:#1e3a5f; font-weight:bold; display: flex; justify-content: space-between;"><span>• استفسار بخصوص الشعبة</span> <span style="color:#c5a059;">←</span></a></div>
+            </div>
+        </aside>
+    </div>
+    
+    <footer class="gov-footer">
+        <p>جميع الحقوق الفنية والبرمجية محفوظة © ٢٠٢٦ | البوابة الإلكترونية الموحدة - مدرسة دير أبي سعيد الثانوية</p>
+        <p style="color: #c5a059; font-weight: bold; font-size: 15px; margin-top: 5px;">تم تصميم وتطوير النظام البرمجي من قبل الطالب: أحمد معاذ أحمد الرشدان</p>
+    </footer>
+
+    <script>
+        window.onload = function() {
+            var isLoggedIn = localStorage.getItem('isLoggedIn');
+            var savedName = localStorage.getItem('username');
+            var loginMenuLink = document.getElementById('loginMenuLink');
+
+            if (isLoggedIn === 'true' && savedName && loginMenuLink) {
+                document.getElementById('userArea').style.display = 'flex';
+                document.getElementById('topUsername').innerText = "مرحباً، " + savedName;
+                document.getElementById('cardName').innerText = savedName;
+
+                loginMenuLink.innerText = `تسجيل الخروج (${savedName})`;
+                loginMenuLink.href = "#";
+                loginMenuLink.onclick = function(e) {
+                    e.preventDefault();
+                    showLogoutModal(e);
+                };
+            } else {
+                document.getElementById('userArea').style.display = 'none';
+            }
+        };
+
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            var dropdown = document.getElementById('profileDropdown');
+            if (dropdown.style.display === 'block') {
+                dropdown.style.display = 'none';
+            } else {
+                dropdown.style.display = 'block';
+            }
+        }
+
+        window.onclick = function() {
+            var dropdown = document.getElementById('profileDropdown');
+            if (dropdown) dropdown.style.display = 'none';
+        }
+
+        function showLogoutModal(event) {
+            if(event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            document.getElementById('customLogoutModal').style.display = 'flex';
+            
+            var dropdown = document.getElementById('profileDropdown');
+            if (dropdown) dropdown.style.display = 'none';
+        }
+
+        function closeLogoutModal() {
+            document.getElementById('customLogoutModal').style.display = 'none';
+        }
+
+        function confirmLogout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

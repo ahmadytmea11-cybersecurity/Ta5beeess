@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة التواصل - مدرسة دير أبي سعيد الثانوية للبنين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* إعدادات التصميم العام وعناصر الـ Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background-color: #f4f6f9; color: #2c3e50; line-height: 2.4; position: relative; overflow-x: hidden; }
+        
+        /* شريط علوي رسمي حكومي للمنصة */
+        .gov-top-bar { background-color: #1a252f; color: #bdc3c7; font-size: 13px; padding: 8px 0; border-bottom: 3px solid #c5a059; }
+        .gov-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; padding: 0 20px; align-items: center; }
+        
+        /* زاوية البروفايل الشخصي العلوية والمعلومات المنسدلة */
+        .user-profile-area { display: none; align-items: center; gap: 10px; cursor: pointer; user-select: none; position: relative; }
+        .profile-img { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #c5a059; background: #cbd5e1; object-fit: cover; }
+
+        /* نافذة معلومات البروفايل المنبثقة (Dropdown) */
+        .profile-dropdown { display: none; position: absolute; left: 0; top: 40px; background: white; border: 1px solid #e2e8f0; width: 260px; padding: 20px; border-radius: 6px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 2000; border-top: 4px solid #1e3a5f; text-align: right; }
+        .profile-dropdown h4 { color: #1e3a5f; font-size: 16px; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; font-weight: 700; }
+        .profile-dropdown p { font-size: 13px; color: #4a5568; line-height: 1.8; margin-bottom: 5px; }
+        .logout-link { display: inline-block; margin-top: 10px; color: #e74c3c; text-decoration: none; font-size: 13px; font-weight: bold; transition: color 0.3s; }
+        .logout-link:hover { color: #c0392b; }
+
+        /* شاشة التأكيد المنبثقة الفخمة الموحدة للموقع (Modal) */
+        .logout-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+        .modal-content { background: #ffffff; padding: 35px; border-radius: 8px; max-width: 420px; width: 90%; text-align: center; border-top: 6px solid #e74c3c; box-shadow: 0 15px 35px rgba(0,0,0,0.3); animation: modalSlide 0.3s ease; }
+        .modal-text { font-size: 16px; font-weight: 600; color: #2c3e50; margin-bottom: 25px; }
+        .modal-buttons { display: flex; gap: 15px; justify-content: center; }
+        .btn-modal { padding: 10px 25px; border: none; border-radius: 4px; font-family: 'Cairo'; font-weight: bold; cursor: pointer; font-size: 14px; transition: background 0.2s; }
+        .btn-confirm { background-color: #e74c3c; color: white; }
+        .btn-confirm:hover { background-color: #c0392b; }
+        .btn-cancel { background-color: #95a5a6; color: white; }
+        .btn-cancel:hover { background-color: #7f8c8d; }
+
+        /* الهيدر والترويسة الرئيسية للموقع */
+        .main-header { background-color: #ffffff; padding: 20px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .brand-text h1 { font-size: 22px; color: #1e3a5f; font-weight: 700; }
+        .brand-text p { font-size: 13px; color: #7f8c8d; margin-top: 5px; }
+
+        /* شريط التنقل (المنيو العلوي) واستجابته الذكية */
+        .navbar { background-color: #1e3a5f; border-bottom: 4px solid #c5a059; position: sticky; top: 0; z-index: 1000; height: 54px; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; list-style: none; padding: 0 20px; align-items: center; height: 100%; }
+        .nav-container li a { display: block; color: #ffffff; text-decoration: none; padding: 0 20px; line-height: 54px; font-size: 15px; font-weight: 600; transition: all 0.3s; }        
+        .nav-container li a:hover, .nav-container li a.active { background-color: #c5a059; color: #1e3a5f; }
+        
+        /* توزيع وهيكلة المحتوى (أعمدة العرض المتجاوبة) */
+        .main-layout { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } }
+        
+        /* بطاقات وصناديق المحتوى والتواصل (Cards) */
+        .gov-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 35px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.01); transition: transform 0.3s ease; }
+        .gov-card:hover { transform: translateY(-2px); }
+        .gov-card-title { font-size: 22px; color: #1e3a5f; margin-bottom: 20px; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .gov-card-title::before { content: ""; display: inline-block; width: 6px; height: 24px; background-color: #c5a059; border-radius: 2px; }
+        .gov-card p { font-size: 16px; color: #4a5568; margin-bottom: 15px; text-indent: 15px; }
+        
+        /* تنسيقات حقول إدخال النموذج وعناصر التحكم */
+        .form-group { margin-bottom: 15px; }
+        input, textarea { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 4px; font-family: 'Cairo'; font-size: 14px; color: #334155; }
+        input:focus, textarea:focus { outline: none; border-color: #c5a059; box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.2); }
+        .btn-submit { background: #1e3a5f; color: white; padding: 12px 30px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; border-bottom: 3px solid #c5a059; transition: all 0.3s; width: 100%; font-size: 16px; }
+        .btn-submit:hover { background: #142842; }
+        
+        /* القائمة الجانبية المساعدة والأدوات المرفقة */
+        .sidebar-box { background: #ffffff; padding: 25px; border: 1px solid #e2e8f0; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.01); }
+        .sidebar-title { font-size: 18px; color: #1e3a5f; margin-bottom: 15px; font-weight: 700; border-bottom: 2px solid #c5a059; padding-bottom: 8px; }
+        .contact-info-text { font-size:14px; margin-bottom:12px; line-height: 1.8; color: #334155; }
+        
+        /* التذييل والفوتر السفلي الرسمي للموقع */
+        .gov-footer { background-color: #1a252f; color: #ffffff; padding: 40px 20px; text-align: center; border-top: 5px solid #c5a059; font-size: 14px; margin-top: 40px; }
+        .gov-footer p { margin-bottom: 10px; color: #cbd5e1; }
+
+        /* الأنيميشن والحركات البرمجية للنافذة السفلية */
+        @keyframes modalSlide { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div id="customLogoutModal" class="logout-modal">
+        <div class="modal-content">
+            <div class="modal-text">❓ هل أنت متأكد من أنك تريد تسجيل الخروج من حسابك التعليمي؟</div>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-confirm" onclick="confirmLogout()">نعم، تسجيل الخروج</button>
+                <button class="btn-modal btn-cancel" onclick="closeLogoutModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="gov-top-bar">
+        <div class="gov-container">
+            <div>بوابة التواصل والاستفسارات الرسمية مع الإدارة المعنية</div>
+            
+            <div id="userArea" class="user-profile-area" onclick="toggleDropdown(event)">
+                <span id="topUsername" style="color:#bdc3c7; font-size:13px; font-weight: 600;"></span>
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img" alt="البروفايل">
+                
+                <div id="profileDropdown" class="profile-dropdown">
+                    <h4 id="cardName">اسم الطالب</h4>
+                    <p><strong>الدور الفني:</strong> طالب نظامي</p>
+                    <p><strong>المؤسسة:</strong> مديرية التربية والتعليم - إربد</p>
+                    <p><strong>حالة الحساب:</strong> موثق ونشط</p>
+                    <a href="#" onclick="showLogoutModal(event)" class="logout-link">تسجيل الخروج</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <header class="main-header">
+        <div class="header-container">
+            <div class="brand-text">
+                <h1>مدرسة دير أبي سعيد الثانوية للبنين</h1>
+                <p>قنوات ومسارات التواصل الفوري والمباشر مع إدارة المدرسة</p>
+            </div>
+        </div>
+    </header>
+    
+    <nav class="navbar">
+        <ul class="nav-container">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="about.html">التعريف بالمدرسة</a></li>
+            <li><a href="classes.html">الصفوف والشعب</a></li>
+            <li><a href="contact.html" class="active">بوابة التواصل</a></li>
+            <li><a href="login.html" id="loginMenuLink">بوابة الدخول</a></li>
+        </ul>
+    </nav>
+    
+    <div class="main-layout">
+        <main>
+            <div class="gov-card">
+                <div class="gov-card-title">إرسال استفسار رسمي أو ملاحظة للإدارة العامّة</div>
+                
+                <form action="https://formsubmit.co/adminstratorwebsitesmaker@gmail.com" method="POST">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_next" value="https://ahmadytmea11-cybersecurity.github.io/contact.html">
+
+                    <div class="form-group">
+                        <input type="text" name="الاسم الكامل" placeholder="الاسم الرباعي الكامل لطالب المعاملة" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="البريد الإلكتروني" placeholder="البريد الإلكتروني المعتمد للتواصل والمتابعة" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="نص الرسالة" rows="6" placeholder="اكتب هنا تفاصيل الاستفسار أو الملاحظة الرسمية بدقة..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">إرسال الطلب الرسمي للتدقيق</button>
+                </form>
+            </div>
+
+            <div class="gov-card">
+                <div class="gov-card-title">العنوان الجغرافي التفصيلي للمنشأة</div>
+                <p>تقع مدرسة دير أبي سعيد الثانوية للبنين في شمال المملكة الأردنية الهاشمية - محافظة إربد - لواء الكورة - وسط مدينة دير أبي سعيد. ترحب الهيئة الإدارية والتدريسية بكافة المراجعين الكرام من أولياء أمور ومهتمين خلال ساعات الدوام الصباحي الرسمي المحددة، لمتابعة شؤون أبنائنا الطلبة ودعم مسيرتهم الأكاديمية.</p>
+            </div>
+        </main>
+
+        <aside>
+            <div class="sidebar-box">
+                <div class="sidebar-title">معلومات الاتصال الفورية</div>
+                <p class="contact-info-text"><strong>• رقم الهاتف المعتمد:</strong> 0772681908</p>
+                <p class="contact-info-text"><strong>• البريد الإلكتروني الرسمي:</strong> adminstratorwebsitesmaker@gmail.com</p>
+                <p class="contact-info-text" style="color: #7f8c8d; font-size: 13px; font-style: italic;">تنبيه أمني: يرجى عدم الاعتماد على البريد الإلكتروني أعلاه في عمليات تسجيل الدخول الشخصية أو استخدامه كحساب أساسي.</p>
+                <p class="contact-info-text"><strong>• مواعيد المراجعات الميدانية:</strong> من الساعة ١١:٠٠ صباحاً وحتى الساعة ١٢:٠٠ ظهراً خلال الدوام الرسمي.</p>
+                
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+                
+                <p class="contact-info-text" style="color: #e74c3c; font-weight: bold; background: #fff5f5; padding: 10px; border-radius: 4px; border: 1px dashed #e74c3c;">• ملاحظة تنظيمية هامّة: هذه البوابة مخصصة للاستعلامات المباشرة، لمعالجة الطلبات السريعة يرجى التقديم عبر الصندوق التفاعلي المتاح في الصفحة الرئيسية للمنصة.</p>
+                
+                <p class="contact-info-text" style="text-align: center; font-weight: bold; margin-top: 15px; color: #c5a059;">⚙️ قنوات التراسل تحت التطوير المستمر ⚙️</p>
+            </div>
+        </aside>
+    </div>
+    
+    <footer class="gov-footer">
+        <p>جميع الحقوق الفنية والبرمجية محفوظة © ٢٠٢٦ | البوابة الإلكترونية الموحدة - مدرسة دير أبي سعيد الثانوية</p>
+        <p style="color: #c5a059; font-weight: bold; font-size: 15px; margin-top: 5px;">تم تصميم وتطوير النظام البرمجي من قبل الطالب: أحمد معاذ أحمد الرشدان</p>
+    </footer>
+
+    <script>
+        window.onload = function() {
+            var isLoggedIn = localStorage.getItem('isLoggedIn');
+            var savedName = localStorage.getItem('username');
+            var loginMenuLink = document.getElementById('loginMenuLink');
+
+            // الفحص والتحقق الأمني من حالة جلسة تسجيل الدخول وتحديث عناصر الصفحة
+            if (isLoggedIn === 'true' && savedName && loginMenuLink) {
+                // تفعيل وعرض مساحة البروفايل الشخصي وملء البيانات
+                document.getElementById('userArea').style.display = 'flex';
+                document.getElementById('topUsername').innerText = "مرحباً، " + savedName;
+                document.getElementById('cardName').innerText = savedName;
+
+                // إعادة تهيئة رابط المنيو العلوي ليقوم باستدعاء شاشة التأكيد المنبثقة
+                loginMenuLink.innerText = `تسجيل الخروج (${savedName})`;
+                loginMenuLink.href = "#";
+                loginMenuLink.onclick = function(e) {
+                    e.preventDefault();
+                    showLogoutModal(e);
+                };
+            } else {
+                // إخفاء مساحة البروفايل بالكامل في حال عدم توفر جلسة دخول نشطة لمنع الأخطاء
+                document.getElementById('userArea').style.display = 'none';
+            }
+        };
+
+        // دالة التحكم بفتح وإغلاق القائمة المنسدلة للبروفايل الشخصي
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            var dropdown = document.getElementById('profileDropdown');
+            if (dropdown.style.display === 'block') {
+                dropdown.style.display = 'none';
+            } else {
+                dropdown.style.display = 'block';
+            }
+        }
+
+        // إغلاق الدروب داون تلقائياً عند الضغط خارج النطاق الفردي بالقائمة
+        window.onclick = function() {
+            var dropdown = document.getElementById('profileDropdown');
+            if (dropdown) dropdown.style.display = 'none';
+        }
+
+        /* 🛠️ منظومة التحكم بشاشة التأكيد المنبثقة التفاعلية لمنع الخروج المفاجئ */
+        function showLogoutModal(event) {
+            if(event) {
+                event.preventDefault();
+                event.stopPropagation(); // منع تعارض واختلاط الأحداث البرمجية بالمنيو
+            }
+            document.getElementById('customLogoutModal').style.display = 'flex';
+            
+            // إغلاق قائمة معلومات الدروب داون فوراً عند ظهور لوحة التأكيد
+            var dropdown = document.getElementById('profileDropdown');
+            if (dropdown) dropdown.style.display = 'none';
+        }
+
+        function closeLogoutModal() {
+            document.getElementById('customLogoutModal').style.display = 'none';
+        }
+
+        // دالة تأكيد تسجيل الخروج ومسح الجلسات وإعادة التوجيه الآمن للرئيسية
+        function confirmLogout() {
+            localStorage.clear(); // مسح ذاكرة التخزين المحلي بالكامل لحماية الحساب
+            window.location.href = 'index.html'; // التوجيه الفوري والآمن لصفحة البداية
+        }
+    </script>
+</body>
+</html>

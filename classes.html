@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كافة الصفوف والشعب - مدرسة دير أبي سعيد الثانوية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background-color: #f4f6f9; color: #2c3e50; line-height: 2.4; }
+        .gov-top-bar { background-color: #1a252f; color: #bdc3c7; font-size: 13px; padding: 8px 0; border-bottom: 3px solid #c5a059; }
+        .gov-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; padding: 0 20px; }
+        .main-header { background-color: #ffffff; padding: 20px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .brand-text h1 { font-size: 22px; color: #1e3a5f; font-weight: 700; }
+        .brand-text p { font-size: 13px; color: #7f8c8d; }
+        .navbar { background-color: #1e3a5f; border-bottom: 4px solid #c5a059; position: sticky; top: 0; z-index: 1000; height: 54px; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; list-style: none; padding: 0 20px; align-items: center; height: 100%; }
+        .nav-container li a { display: block; color: #ffffff; text-decoration: none; padding: 0 20px; line-height: 54px; font-size: 15px; font-weight: 600; transition: all 0.3s; }
+        .nav-container li a:hover, .nav-container li a.active { background-color: #c5a059; color: #1e3a5f; }
+        .main-layout { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } }
+        .gov-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 35px; margin-bottom: 30px; display: none; }
+        .gov-card-title { font-size: 22px; color: #1e3a5f; margin-bottom: 20px; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .gov-card-title::before { content: ""; display: inline-block; width: 6px; height: 24px; background-color: #c5a059; border-radius: 2px; }
+        .class-list { list-style: none; margin-top: 15px; display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .class-item { background: #f8fafc; padding: 12px 20px; border-right: 4px solid #1e3a5f; font-weight: bold; font-size: 15px; border-radius: 0 4px 4px 0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s ease-in-out; }
+        .class-item:hover { background: #e2e8f0; border-right-color: #c5a059; transform: translateX(-3px); }
+        .class-badge { background: #c5a059; color: #1e3a5f; padding: 2px 10px; font-size: 12px; border-radius: 20px; }
+        .sidebar-title { font-size: 18px; color: #1e3a5f; margin-bottom: 15px; font-weight: 700; border-bottom: 2px solid #c5a059; }
+        .gov-footer { background-color: #1a252f; color: #ffffff; padding: 40px 20px; text-align: center; border-top: 5px solid #c5a059; }
+        
+        .student-id-card { background: linear-gradient(135deg, #1e3a5f, #1a252f); color: white; border-radius: 6px; padding: 25px; margin-bottom: 30px; border-right: 5px solid #c5a059; }
+        .student-id-card h3 { color: #c5a059; font-size: 18px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 8px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; font-size: 14px; }
+
+        /* 🎨 تنسيق شاشة التأكيد المنبثقة (Modal) */
+        .logout-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 2000; align-items: center; justify-content: center; }
+        .modal-content { background: #ffffff; padding: 30px; border-radius: 8px; max-width: 400px; width: 90%; text-align: center; border-top: 5px solid #e74c3c; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .modal-text { font-size: 16px; font-weight: 600; color: #2c3e50; margin-bottom: 25px; }
+        .modal-buttons { display: flex; gap: 15px; justify-content: center; }
+        .btn-modal { padding: 10px 25px; border: none; border-radius: 4px; font-family: 'Cairo'; font-weight: bold; cursor: pointer; font-size: 14px; transition: background 0.2s; }
+        .btn-confirm { background-color: #e74c3c; color: white; }
+        .btn-confirm:hover { background-color: #c0392b; }
+        .btn-cancel { background-color: #95a5a6; color: white; }
+        .btn-cancel:hover { background-color: #7f8c8d; }
+    </style>
+</head>
+<body>
+
+    <div class="gov-top-bar">
+        <div class="gov-container">
+            <div>بوابة الشعب والصفوف الدراسية الشاملة</div>
+            <div>الثلاثاء، ٢٦ مايو ٢٠٢٦</div>
+        </div>
+    </div>
+
+    <header class="main-header">
+        <div class="header-container">
+            <div class="brand-text">
+                <h1>مدرسة دير أبي سعيد الثانوية</h1>
+                <p id="welcomeMessage">الدليل الأكاديمي الشامل وتفاصيل الشعب الصفية</p>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <ul class="nav-container">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="about.html">التعريف بالمدرسة</a></li>
+            <li><a href="classes.html" class="active">الصفوف والشعب</a></li>
+            <li><a href="contact.html">بوابة التواصل</a></li>
+            <li><a href="login.html" id="loginLink">بوابة الدخول</a></li>
+        </ul>
+    </nav>
+
+    <div id="customLogoutModal" class="logout-modal">
+        <div class="modal-content">
+            <div class="modal-text">❓ هل أنت متأكد من أنك تريد تسجيل الخروج من حسابك؟</div>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-confirm" onclick="confirmLogout()">نعم، تسجيل الخروج</button>
+                <button class="btn-modal btn-cancel" onclick="closeLogoutModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-layout">
+        <main>
+            <div class="student-id-card" id="studentCard" style="display: none;">
+                <h3>💳 بطاقة تعريف الطالب الرقمية</h3>
+                <div class="info-grid">
+                    <div><strong>الاسم الكامل:</strong> <span id="cardName"></span></div>
+                    <div><strong>الرقم الوطني:</strong> <span id="cardID"></span></div>
+                    <div><strong>الصف الدراسي:</strong> <span id="cardClass"></span></div>
+                    <div><strong>الشعبة الدراسية:</strong> <span id="cardSection"></span></div>
+                </div>
+            </div>
+
+            <div class="gov-card" id="section-upper">
+                <div class="gov-card-title">المرحلة الأساسية العليا</div>
+                <p>اضغط على الخيار أدناه للانتقال الآمن ومطالعة السجلات والبيانات الدراسية التابعة لصفك وشعبتك.</p>
+                <ul class="class-list">
+                    <li class="class-item" onclick="goToClassFile()">
+                        <span id="label-upper">جاري تحميل الصف...</span> <span class="class-badge">دخول الشعبة</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="gov-card" id="section-lower">
+                <div class="gov-card-title">المرحلة الأساسية الدنيا</div>
+                <p>اضغط على الخيار أدناه للانتقال الآمن ومطالعة السجلات والبيانات الدراسية التابعة لصفك وشعبتك.</p>
+                <ul class="class-list">
+                    <li class="class-item" onclick="goToClassFile()">
+                        <span id="label-lower">جاري تحميل الصف...</span> <span class="class-badge">دخول الشعبة</span>
+                    </li>
+                </ul>
+            </div>
+        </main>
+        
+        <aside>
+            <div style="background: #ffffff; padding: 25px; border: 1px solid #e2e8f0; border-radius: 6px;">
+                <div class="sidebar-title">أمن البيانات المدرسية</div>
+                <p style="font-size:14px; color:#4a5568;">بموجب الصلاحيات والخصوصية الرقمية المعتمدة، يعرض النظام لك حصرياً رابط التوجيه الخاص بصفك الدراسي وشعبتك دون غيرها.</p>
+            </div>
+        </aside>
+    </div>
+
+    <footer class="gov-footer">
+        <p>جميع الحقوق محفوظة © ٢٠٢٦ | مدرسة دير أبي سعيد الثانوية</p>
+        <p>تم إنشاء الموقع من قبل الطالب : احمد معاذ احمد الرشدان</p>
+    </footer>
+
+    <script>
+        window.onload = function() {
+            var isLoggedIn = localStorage.getItem('isLoggedIn');
+            var username = localStorage.getItem('username');
+            var nationalId = localStorage.getItem('nationalId');
+            var studentClass = localStorage.getItem('studentClass');
+            var studentSection = localStorage.getItem('studentSection');
+            var loginLink = document.getElementById('loginLink');
+
+            if (isLoggedIn !== 'true' || !username) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // تعديل زر تسجيل الخروج
+            loginLink.innerText = `تسجيل الخروج (${username})`;
+            loginLink.href = "#";
+            loginLink.onclick = function(e) {
+                e.preventDefault();
+                showLogoutModal(); 
+            };
+
+            document.getElementById('welcomeMessage').innerText = `أهلاً بك يا ${username}. يمكنك الآن الدخول لملف شعبتك المخصص.`;
+
+            document.getElementById('cardName').innerText = username;
+            document.getElementById('cardID').innerText = nationalId || "2002675586";
+            document.getElementById('cardClass').innerText = studentClass || "الثامن الأساسي";
+            document.getElementById('cardSection').innerText = studentSection || "شعبة أ";
+            document.getElementById('studentCard').style.display = 'block';
+
+            var cleanName = (studentClass && studentSection) ? `${studentClass} - ${studentSection}` : "الصف الثامن الأساسي - شعبة أ";
+            
+            // بما أن الطالب في الصف الثامن، نظهر المرحلة العليا دائماً
+            document.getElementById('section-upper').style.display = 'block';
+            document.getElementById('label-upper').innerText = cleanName;
+        }
+
+        // 🛠️ وظائف التحكم بشاشة التأكيد
+        function showLogoutModal() {
+            document.getElementById('customLogoutModal').style.display = 'flex';
+        }
+
+        function closeLogoutModal() {
+            document.getElementById('customLogoutModal').style.display = 'none';
+        }
+
+        function confirmLogout() {
+            localStorage.clear(); 
+            window.location.href = 'index.html'; 
+        }
+
+        // 🛠️ دالة الانتقال المحدثة والمضمونة لملف الثامن أ
+        function goToClassFile() {
+            var studentClass = localStorage.getItem('studentClass');
+            var userClassFile = localStorage.getItem('userClass');
+
+            // فحص ذكي: إذا كانت البيانات تشير إلى الصف الثامن، توجه مباشرة إلى eighta.html
+            if (studentClass === "الثامن الأساسي" || userClassFile === "eighta") {
+                window.location.href = 'eighta.html';
+            } else {
+                // نظام احتياطي في حال وجود صفوف أخرى مستقبلاً
+                var target = userClassFile ? userClassFile + '.html' : 'eighta.html';
+                window.location.href = target;
+            }
+        }
+    </script>
+
+</body>
+</html>
